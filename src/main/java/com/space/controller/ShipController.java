@@ -1,12 +1,10 @@
 package com.space.controller;
 
-import com.space.dto.AddShipDtoRequest;
-import com.space.dto.ShipDtoRequest;
+import com.space.dto.AddOrUpdateShipDtoRequest;
 import com.space.model.Ship;
 import com.space.model.ShipType;
 import com.space.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +69,19 @@ public class ShipController {
     }*/
 
     @PostMapping(value = "/rest/ships")
-    public ResponseEntity<Ship> addShip(@RequestBody AddShipDtoRequest request) {
-        return shipService.validateAndSaveShipReq(request);
+    public ResponseEntity<Ship> addShip(@RequestBody AddOrUpdateShipDtoRequest request) {
+        return shipService.validateAndSaveShip(request);
     }
+
+    @GetMapping(value = "/rest/ships/{id}")
+    public ResponseEntity<Ship> getShipById(@PathVariable(value = "id") Long shipId) {
+        return shipService.getShip(shipId);
+    }
+
+    @PostMapping(value = "rest/ships/{id}")
+    public ResponseEntity<Ship> updateShip(@PathVariable(value = "id") Long shipId,
+                                            @RequestBody AddOrUpdateShipDtoRequest request) {
+        return shipService.updateShip(shipId, request);
+    }
+
 }

@@ -2,7 +2,7 @@ package com.space.dto;
 
 import com.space.model.ShipType;
 
-public class AddShipDtoRequest {
+public class AddOrUpdateShipDtoRequest {
 
     private String name;
     private String planet;
@@ -12,11 +12,11 @@ public class AddShipDtoRequest {
     private Double speed;
     private Integer crewSize;
 
-    public AddShipDtoRequest() {
+    public AddOrUpdateShipDtoRequest() {
     }
 
-    public AddShipDtoRequest(String name, String planet, ShipType shipType,
-                             Long prodDate, Boolean isUsed, Double speed, Integer crewSize) {
+    public AddOrUpdateShipDtoRequest(String name, String planet, ShipType shipType,
+                                     Long prodDate, Boolean isUsed, Double speed, Integer crewSize) {
         this.name = name;
         this.planet = planet;
         this.shipType = shipType;
@@ -84,14 +84,20 @@ public class AddShipDtoRequest {
 
     public boolean validate() {
         return checkString(name) && checkString(planet) &&
-                shipType != null && speed != null && prodDate > 0 && crewSize != null &&
-                crewSize >= 1 && crewSize <= 9999 && speed >= 0.01 && speed <= 0.99;
+                shipType != null && speed != null && checkSpeed(speed) && prodDate > 0 && crewSize != null &&
+                checkCrewSize(crewSize);
     }
 
-
-
-    private boolean checkString(String string) {
+    public boolean checkString(String string) {
         return string.length() < 51 && !string.equals("");
+    }
+
+    public boolean checkSpeed(Double speed) {
+        return speed >= 0.01 && speed <= 0.99;
+    }
+
+    public boolean checkCrewSize(Integer crewSize) {
+        return crewSize >= 1 && crewSize <= 9999;
     }
 
     @Override
