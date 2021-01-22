@@ -40,7 +40,6 @@ public class ShipController {
         List<Ship> allShips = shipService.getShips(name, planet, shipType,
                 after, before, isUsed, minSpeed, maxSpeed,
                 minCrewSize, maxCrewSize, minRating, maxRating);
-        //return shipService.getShipsOnPage(shipService.sortShipsByOrder(allShips, order), pageNumber, pageSize);
         List<Ship> sortedShips = shipService.sortShipsByOrder(allShips, order);
         return shipService.getShipsOnPage(sortedShips, pageNumber, pageSize);
     }
@@ -63,11 +62,6 @@ public class ShipController {
                 minCrewSize, maxCrewSize, minRating, maxRating).size();
     }
 
-    /*@PostMapping(value = "/rest/ships")
-    public ResponseEntity<Ship> addShip(@RequestBody Ship ship) {
-        return shipService.validateAndSaveShip(ship);
-    }*/
-
     @PostMapping(value = "/rest/ships")
     public ResponseEntity<Ship> addShip(@RequestBody AddOrUpdateShipDtoRequest request) {
         return shipService.validateAndSaveShip(request);
@@ -82,6 +76,11 @@ public class ShipController {
     public ResponseEntity<Ship> updateShip(@PathVariable(value = "id") Long shipId,
                                             @RequestBody AddOrUpdateShipDtoRequest request) {
         return shipService.updateShip(shipId, request);
+    }
+
+    @DeleteMapping(value = "/rest/ships/{id}")
+    public ResponseEntity<Ship> deleteShip(@PathVariable(value = "id") Long shipId) {
+        return shipService.deleteShip(shipId);
     }
 
 }

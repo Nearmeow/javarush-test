@@ -128,7 +128,7 @@ public class ShipService {
     }
 
     public ResponseEntity<Ship> updateShip(Long id, AddOrUpdateShipDtoRequest request) {
-        if (id == null || id <= 0) {
+        if (!isIdValid(id)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         ResponseEntity<Ship> entityShip = getShip(id);
@@ -187,6 +187,23 @@ public class ShipService {
         ship.setRating(newRating);
 
         return new ResponseEntity<>(ship, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Ship> deleteShip(Long id) {
+        if (!isIdValid(id)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        ResponseEntity<Ship> entityShip = getShip(id);
+        Ship ship = entityShip.getBody();
+        if (ship == null) {
+            return entityShip;
+        }
+        shipRepository.delete(ship);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private boolean isIdValid(Long id) {
+        return id != null && id > 0;
     }
 
     private boolean isDateValid(Date prodDate) {
