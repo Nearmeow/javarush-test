@@ -186,6 +186,7 @@ public class ShipService {
         double newRating = calculateRating(ship.getSpeed(), ship.getUsed(), ship.getProdDate());
         ship.setRating(newRating);
 
+        saveShip(ship);
         return new ResponseEntity<>(ship, HttpStatus.OK);
     }
 
